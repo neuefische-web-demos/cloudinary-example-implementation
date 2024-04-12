@@ -12,7 +12,12 @@ export default function PostList({ posts }) {
           <StyledListItem key={_id}>
             <h3>{title}</h3>
             <StyledImageWrapper>
-              <StyledImage alt={`image of ${title}`} src={image.url} />
+              <StyledImage
+                alt={`image of ${title}`}
+                src={image.url}
+                fill
+                style={{ objectFit: "contain" }}
+              />
             </StyledImageWrapper>
             <p>{content}</p>
           </StyledListItem>
@@ -43,7 +48,7 @@ const StyledImageWrapper = styled.div`
   overflow: hidden;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: contain;
