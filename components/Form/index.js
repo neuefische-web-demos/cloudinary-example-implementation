@@ -12,12 +12,16 @@ export default function Form({ onAddPost }) {
       body: formData,
     });
 
-    const { url, width, height } = await response.json();
+    const { images } = await response.json();
+
+    const imagesArray = images.map(({ url, width, height }) => {
+      return { url, width, height };
+    });
 
     onAddPost({
       title,
       content,
-      image: { url, width, height },
+      images: imagesArray,
     });
   }
 
@@ -26,7 +30,13 @@ export default function Form({ onAddPost }) {
       <StyledLabel htmlFor="title">Title</StyledLabel>
       <StyledInput name="title" id="title" placeholder="Enter the post title" />
       <StyledLabel htmlFor="cover">Cover</StyledLabel>
-      <StyledFileInput name="cover" id="cover" accept="image/*" required />
+      <StyledFileInput
+        name="cover"
+        id="cover"
+        accept="image/*"
+        required
+        multiple
+      />
       <StyledLabel htmlFor="content">Content</StyledLabel>
       <StyledTextArea
         name="content"
