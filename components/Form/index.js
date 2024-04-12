@@ -1,6 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
+import Image from "next/image";
 
 export default function Form({ onAddPost }) {
+  const [image, setImage] = useState(null);
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -21,12 +25,35 @@ export default function Form({ onAddPost }) {
     });
   }
 
+  function handleChange(event) {
+    setImage(event.target.files[0]);
+  }
+
   return (
     <StyledForm onSubmit={handleSubmit}>
       <StyledLabel htmlFor="title">Title</StyledLabel>
       <StyledInput name="title" id="title" placeholder="Enter the post title" />
       <StyledLabel htmlFor="cover">Cover</StyledLabel>
-      <StyledFileInput name="cover" id="cover" accept="image/*" required />
+      <StyledFileInput
+        name="cover"
+        id="cover"
+        accept="image/*"
+        required
+        onChange={handleChange}
+      />
+      {image && (
+        <StyledImageWrapper>
+          <Image
+            src={URL.createObjectURL(image)}
+            alt="Preview of the image to upload"
+            sizes="300px"
+            fill
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </StyledImageWrapper>
+      )}
       <StyledLabel htmlFor="content">Content</StyledLabel>
       <StyledTextArea
         name="content"
@@ -74,6 +101,13 @@ const StyledFileInput = styled(StyledInput).attrs({
     border-color: #0056b3;
     outline: none;
   }
+`;
+
+const StyledImageWrapper = styled.div`
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
 `;
 
 const StyledTextArea = styled.textarea`
