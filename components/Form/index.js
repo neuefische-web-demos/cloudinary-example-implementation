@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Form({ onAddPost }) {
+export default function Form({ mutate }) {
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -12,13 +12,32 @@ export default function Form({ onAddPost }) {
       body: formData,
     });
 
-    const { url, width, height } = await response.json();
+    if (!response.ok) {
+      console.error("Whoopsie");
+      return;
+    }
 
-    onAddPost({
-      title,
-      content,
-      image: { url, width, height },
-    });
+    try {
+      const { height, width, url } = await response.json();
+
+      const newPost = {
+        title,
+        image: { height, width, url },
+        content,
+      };
+
+      await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPost),
+      });
+
+      mutate();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
