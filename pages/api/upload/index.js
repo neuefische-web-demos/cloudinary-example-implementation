@@ -15,13 +15,15 @@ export const config = {
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
-    return response.status(400).json({ message: "Method not allowed" });
+    response.status(400).json({ message: "Method not allowed" });
+    return;
   }
 
   const form = formidable({});
 
   const [fields, files] = await form.parse(request);
 
+  // we need to access files.cover here since it is the name of our file input. Replace this with the name of your input.
   const file = files.cover[0];
   const { newFilename, filepath } = file;
 
