@@ -8,17 +8,21 @@ export default function PostList({ posts }) {
     <StyledContainer>
       <p>Those are some fake blog posts</p>
       <ul>
-        {posts.map(({ _id, title, content, image }) => (
+        {posts.map(({ _id, title, content, images }) => (
           <StyledListItem key={_id}>
             <h3>{title}</h3>
-            <StyledImageWrapper>
-              <StyledImage
-                alt={`image of ${title}`}
-                src={image.url}
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </StyledImageWrapper>
+            {images.map((image) => {
+              return (
+                <StyledImageWrapper>
+                  <StyledImage
+                    alt={`image of ${title}`}
+                    src={image.url}
+                    fill
+                    style={{ objectFit: "contain" }}
+                  />
+                </StyledImageWrapper>
+              );
+            })}
             <p>{content}</p>
           </StyledListItem>
         ))}
