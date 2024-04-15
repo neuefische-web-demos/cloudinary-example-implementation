@@ -15,7 +15,8 @@ export const config = {
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
-    return response.status(400).json({ message: "Method not allowed" });
+    response.status(400).json({ message: "Method not allowed" });
+    return;
   }
 
   const form = formidable({});
@@ -34,5 +35,5 @@ export default async function handler(request, response) {
     images.push(result);
   }
 
-  return response.status(201).json({ images });
+  response.status(201).json({ images });
 }
